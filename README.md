@@ -1,5 +1,5 @@
 # WandBuilder
-Python compiler, wrapper from WandBox
+Python compiler, WandBox wrapper
 
 
 ## Usage
