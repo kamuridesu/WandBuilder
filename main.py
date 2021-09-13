@@ -1,6 +1,7 @@
 import requests
 from builder import buildPostData
 import json
+import sys
 
 
 class Compiler:
@@ -16,29 +17,29 @@ class Compiler:
 
     def postData(self) -> bool:
         supported_langs = [
-                    'bash',
+                    #'bash',
                     'c',
-                    'csharp',
+                    #'csharp',
                     'cpp',
-                    'cs',
-                    'go',
-                    'golang',
-                    'haskel',
-                    'julia',
+                    #'cs',
+                    #'go',
+                    #'golang',
+                    #'haskel',
+                    #'julia',
                     'java',
                     'js',
                     'javascript',
-                    'lua',
+                    #'lua',
                     'php',
-                    'pascal',
-                    'perl',
+                    #'pascal',
+                    #'perl',
                     'py',
                     'python',
-                    'r',
-                    'ruby',
+                    #'r',
+                    #'ruby',
                     'rust',
                     'rs',
-                    'sql',
+                    #'sql',
                     'typescript',
                     'ts',
                 ]
@@ -49,10 +50,20 @@ class Compiler:
         return False
 
     def parseResponse(self):
+        std = ["stdout", "stderr"]
         data = self.output
         data = data.split("\n")
-        data = [json.loads(data[i]) for i in range(len(data) - 1)][1:3]
+        data = [json.loads(data[i]) for i in range(len(data) - 1)]
         output = {"exit_code": data[1]['data'], "body": data[0]['data']}
+        stdout = ""
+        exit_code = ""
+        for x in data:
+            for k, v in x.items():
+                if v.lower() in std:
+                    stdout += x['data']
+                if v == "ExitCode":
+                    exit_code = x['data']
+        output = {"exit_code": exit_code, "body": stdout}
         self.output = output
 
     def sendData(self) -> bool:
@@ -64,10 +75,23 @@ class Compiler:
         return self.output
 
 
+def argparser():
+    args = sys.argv[1:]
+    if len(args) < 2:
+        return print("Error! 2 arguments expected. Usage: python main.py [lanaguage] [code]")
+    lang = args[0]
+    code = args[1]
+    res = (main(lang, code))
+    print(res['body'])
+    print("Exited with return code: " + str(res['exit_code']))
+
+
 def main(lang: str, data: str) -> dict:
     c = Compiler(lang, data)
     return c.getResponse()
 
 
 if __name__ == "__main__":
-    print(main("py", 'print("hello")'));
+    # print(main("py", 'print("hello")'));
+    argparser()
+
