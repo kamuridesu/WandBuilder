@@ -1,0 +1,35 @@
+# This workflow will install Python dependencies, run tests and lint with a single version of Python
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-python-with-github-actions
+
+name: WandBuilder
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python 3.9
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.9
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install requests
+        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+    - name: test code
+      run: |
+        echo "::set-output name=run-code::$(python main.py py 'print(\"hello world\")')"
+      id: test_code
+  
+    - name: output
+      run: |
+        echo "${{ join(steps.test_code.outputs.*, '\n') }}"
