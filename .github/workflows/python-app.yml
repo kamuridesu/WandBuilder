@@ -33,3 +33,4 @@ jobs:
     - name: output
       run: |
         echo "${{ join(steps.test_code.outputs.*, '\n') }}"
+        [[ steps.test_code.outputs.* == "hello world" ]] && echo "yes" || echo "no"
