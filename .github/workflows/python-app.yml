@@ -27,7 +27,7 @@ jobs:
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
     - name: test code
       run: |
-        echo "::set-output name=run-code::$(python main.py py 'print(\"hello world\")')"
+        echo "::set-output name=run-code::$(python main.py py 'print("hello world")')"
       id: test_code
   
     - name: output
