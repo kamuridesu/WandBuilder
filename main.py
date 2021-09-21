@@ -11,12 +11,7 @@ class Compiler:
         self.api_url = "https://wandbox.org/api/compile.ndjson"
         self.headers = {'Content-type': 'application/json'}
         self.output = ""
-        self.postData()
-        self.sendData()
-        self.parseResponse()
-
-    def postData(self) -> bool:
-        supported_langs = [
+        self.supported_langs = [
                     #'bash',
                     'c',
                     #'csharp',
@@ -43,33 +38,44 @@ class Compiler:
                     'typescript',
                     'ts',
                 ]
-        if self.data and self.lang in supported_langs:
+
+        # self.postData()
+        # self.sendData()
+        # self.parseResponse()
+
+    def postData(self) -> bool:
+        if self.data and self.lang in self.supported_langs:
             data = buildPostData(self.lang, self.data)
             self.data = data
-            return True
+            return self.sendData()
         return False
 
-    def parseResponse(self):
-        std = ["stdout", "stderr"]
-        data = self.output
-        data = data.split("\n")
-        data = [json.loads(data[i]) for i in range(len(data) - 1)]
-        output = {"exit_code": data[1]['data'], "body": data[0]['data']}
-        stdout = ""
-        exit_code = ""
-        for x in data:
-            for k, v in x.items():
-                if v.lower() in std:
-                    stdout += x['data']
-                if v == "ExitCode":
-                    exit_code = x['data']
-        output = {"exit_code": exit_code, "body": stdout}
-        self.output = output
+    def parseResponse(self) -> bool:
+        try:
+            std = ["stdout", "stderr", "compilermessagee"]
+            data = self.output
+            data = data.split("\n")
+            data = [json.loads(data[i]) for i in range(len(data) - 1)]
+            stdout = ""
+            exit_code = ""
+            for x in data:
+                for k, v in x.items():
+                    if v.lower() in std:
+                        stdout += x['data']
+                    if v == "ExitCode":
+                        exit_code = x['data']
+            output = {"exit_code": exit_code, "body": stdout}
+            self.output = output
+            return True
+        except Exception:
+            return False
 
     def sendData(self) -> bool:
         if self.data: 
             res = requests.post(self.api_url, self.data)
             self.output = res.text
+            return self.parseResponse()
+        return False
 
     def getResponse(self):
         return self.output
@@ -88,7 +94,10 @@ def argparser():
 
 def main(lang: str, data: str) -> dict:
     c = Compiler(lang, data)
-    return c.getResponse()
+    if c.postData():
+        return c.getResponse()
+    else:
+        return {"body": "Erro! Não foi possível executar!", "exit_code": 127}
 
 
 if __name__ == "__main__":
