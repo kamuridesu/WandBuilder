@@ -27,10 +27,5 @@ jobs:
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
     - name: test code
       run: |
-        echo "::set-output name=run-code::$(python main.py py 'print("hello world")')"
+        python -m unittest discover -s ./tests
       id: test_code
-  
-    - name: output
-      run: |
-        echo "${{ join(steps.test_code.outputs.*, '\n') }}"
-        [[ steps.test_code.outputs.* == "hello world" ]] && echo "yes" || echo "no"
