@@ -95,7 +95,7 @@ def argparser():
 def main(lang: str, data: str) -> dict:
     c = Compiler(lang, data)
     if c.postData():
-        return c.getResponse()
+        return c.getRespose()
     else:
         return {"body": "Erro! Não foi possível executar!", "exit_code": 127}
 
