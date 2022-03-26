@@ -1,21 +1,7 @@
 try:
-    from src.python import buildPython
-    from src.cpp import buildCPP
-    from src.c import buildC
-    from src.php import buildPHP
-    from src.typescript import buildTS
-    from src.rust import buildRust
-    from src.javascript import buildJS
-    from src.java import buildJava
+    from src.runners import *
 except:
-    from .src.python import buildPython
-    from .src.cpp import buildCPP
-    from .src.c import buildC
-    from .src.php import buildPHP
-    from .src.typescript import buildTS
-    from .src.rust import buildRust
-    from .src.javascript import buildJS
-    from .src.java import buildJava
+    from .src.runners import *
 
 
 def buildPostData(lang: str, data: str) -> str:
@@ -35,4 +21,24 @@ def buildPostData(lang: str, data: str) -> str:
         return buildJava(data)
     if lang in ["rs", "rust"]:
         return buildRust(data)
+    if lang in ["sh", "bash"]:
+        return buildBash(data)
+    if lang in ['csharp', 'cs']:
+        return buildCSharp(data)
+    if lang in ['go', 'golang']:
+        return buildGo(data)
+    if lang in ['haskell', 'hs']:
+        return buildHaskell(data)
+    if lang in ['julia', 'jl']:
+        return buildJulia(data)
+    if lang in ['lua', 'l']:
+        return buildLua(data)
+    if lang in ['pas', 'pascal']:
+        return buildPascal(data)
+    if lang in ['perl', 'pl']:
+        return buildPerl(data)
+    if lang in ['r', 'rlang']:
+        return buildR(data)
+    if lang in ['ruby', 'rb']:
+        return buildRuby(data)
 
