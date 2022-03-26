@@ -1,5 +1,8 @@
 import requests
-from builder import buildPostData
+try:
+    from builder import buildPostData
+except:
+    from .builder import buildPostData
 import json
 import sys
 

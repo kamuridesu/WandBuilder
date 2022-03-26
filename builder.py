@@ -1,11 +1,21 @@
-from src.python import buildPython
-from src.cpp import buildCPP
-from src.c import buildC
-from src.php import buildPHP
-from src.typescript import buildTS
-from src.rust import buildRust
-from src.javascript import buildJS
-from src.java import buildJava
+try:
+    from src.python import buildPython
+    from src.cpp import buildCPP
+    from src.c import buildC
+    from src.php import buildPHP
+    from src.typescript import buildTS
+    from src.rust import buildRust
+    from src.javascript import buildJS
+    from src.java import buildJava
+except:
+    from .src.python import buildPython
+    from .src.cpp import buildCPP
+    from .src.c import buildC
+    from .src.php import buildPHP
+    from .src.typescript import buildTS
+    from .src.rust import buildRust
+    from .src.javascript import buildJS
+    from .src.java import buildJava
 
 
 def buildPostData(lang: str, data: str) -> str:
