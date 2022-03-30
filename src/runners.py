@@ -143,3 +143,11 @@ def buildJava(code: str) -> str:
             "compiler": "openjdk-jdk-15.0.3+2"
         }
     return json.dumps(data)
+
+
+def buildGo(code: str) -> str:
+    data = {
+            "code": code,
+            "compiler": "go-1.16.3"
+        }
+    return json.dumps(data)

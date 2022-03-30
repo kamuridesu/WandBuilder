@@ -41,4 +41,6 @@ def buildPostData(lang: str, data: str) -> str:
         return buildR(data)
     if lang in ['ruby', 'rb']:
         return buildRuby(data)
+    if lang in ["golang", "go"]:
+        return buildGo(data)
 

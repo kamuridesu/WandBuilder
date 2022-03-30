@@ -148,6 +148,14 @@ class testRuby(unittest.TestCase):
             self.assertEqual(c.getResponse(), to_compare, msg="Ruby")
 
 
+class testGolang(unittest.TestCase):
+    def test_hello(self):
+        c = Compiler("go", "package main\n\nimport \"fmt\"\n\nfunc main() {\n    fmt.Println(\"hello world\")\n}")
+        to_compare = {'exit_code': '0', 'body': 'hello world\n'} 
+        if c.postData():
+            self.assertEqual(c.getResponse(), to_compare, msg="Go")
+
+
 
 if __name__ == '__main__':
     unittest.main()
