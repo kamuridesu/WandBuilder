@@ -124,7 +124,7 @@ def buildPython(code: str) -> str:
 def buildPHP(code: str) -> str:
     data = {
             "code": code,
-            "compiler": "php-8.0.3"
+            "compiler": "php-8.3.3"
         }
     return json.dumps(data)
 

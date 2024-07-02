@@ -76,6 +76,9 @@ class Compiler:
     def sendData(self) -> bool:
         if self.data: 
             res = requests.post(self.api_url, self.data)
+            if res.status_code == 404:
+                print(res.text)
+                exit(1)
             self.output = res.text
             return self.parseResponse()
         return False
